@@ -12,27 +12,31 @@
 </head>
 
 <body>
-    <h2>Test Page for Web Socket</h2>
+    <img src="media/img/portswigger-logo.gif"/>
 
-    <h3>PlainText WebSocket</h3>
-    <button id="ws-open">Open</button>
-    <button id="ws-close">Close</button>
-    <br>
-    <input id="ws-input" type="text"/>
-    <button id="ws-send">Send</button>
-    <br>
-    <textarea id="ws-log" cols="80" rows="25"></textarea>
+    <div id='sockets'>
+        <div id='plain'>
+            <h3>PlainText WebSocket</h3>
+            <button id="ws-open">Open</button>
+            <button id="ws-close">Close</button>
+            <br>
+            <input id="ws-input" type="text"/>
+            <button id="ws-send">Send</button>
+            <br>
+            <textarea id="ws-log" cols="80" rows="25"></textarea>
+        </div>
 
-    <hr>
-
-    <h3>TLS WebSocket</h3>
-    <button id="wss-open">Open</button>
-    <button id="wss-close">Close</button>
-    <br>
-    <input id="wss-input" type="text"/>
-    <button id="wss-send">Send</button>
-    <br>
-    <textarea id="wss-log" cols="80" rows="25"></textarea>
+        <div id='tls'>
+            <h3>TLS WebSocket</h3>
+            <button id="wss-open">Open</button>
+            <button id="wss-close">Close</button>
+            <br>
+            <input id="wss-input" type="text"/>
+            <button id="wss-send">Send</button>
+            <br>
+            <textarea id="wss-log" cols="80" rows="25"></textarea>
+        </div>
+    </div>
 
     <script src="media/js/jquery-1.10.2.min.js"></script>
     <script src="media/js/webSocketTestPage.js"></script>

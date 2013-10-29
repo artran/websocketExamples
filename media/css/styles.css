@@ -1,5 +1,24 @@
 body {
-    background-color: #eee;
+    padding: 0;
+    margin: 0;
+}
+
+#plain, #tls {
+    padding: 1em;
+}
+
+#plain {
+    width: 45%;
+    float: left;
+}
+
+#tls {
+    width: 45%;
+    float: right;
+}
+
+img {
+    padding: 1em;
 }
 
 h2 {
