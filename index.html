@@ -1,8 +1,40 @@
-<html>
+<!doctype html>
+
+<html lang="en">
 <head>
-    <title>WebSocket test page</title>
+    <meta charset="utf-8">
+
+    <title>WebSocket Test Page</title>
+    <meta name="description" content="WebSocket test page">
+    <meta name="author" content="Ray Tran">
+
+    <link rel="stylesheet" href="media/css/styles.css">
 </head>
+
 <body>
-    <h1>WebSocket</h1>
+    <h2>Test Page for Web Socket</h2>
+
+    <h3>PlainText WebSocket</h3>
+    <button id="ws-open">Open</button>
+    <button id="ws-close">Close</button>
+    <br>
+    <input id="ws-input" type="text"/>
+    <button id="ws-send">Send</button>
+    <br>
+    <textarea id="ws-log" cols="80" rows="25"></textarea>
+
+    <hr>
+
+    <h3>TLS WebSocket</h3>
+    <button id="wss-open">Open</button>
+    <button id="wss-close">Close</button>
+    <br>
+    <input id="wss-input" type="text"/>
+    <button id="wss-send">Send</button>
+    <br>
+    <textarea id="wss-log" cols="80" rows="25"></textarea>
+
+    <script src="media/js/jquery-1.10.2.min.js"></script>
+    <script src="media/js/webSocketTestPage.js"></script>
 </body>
 </html>
