@@ -15,34 +15,22 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License. */
 
-/*
-	The Definitive Guide to HTML5 WebSocket	
-*/
-
 var websocket = require("./websocket-server");
 
 websocket.listen(80, "10.21.10.40", function(conn) {
-  console.log("Plaintext connection opened");
+    conn.on("data", function(opcode, data) {
+        conn.send(data);
+    });
 
-  conn.on("data", function(opcode, data) {
-    console.log("Plaintext message: ", data);
-    conn.send(data);
-  });
-
-  conn.on("close", function(code, reason) {
-    console.log("Plaintext connection closed: ", code, reason);
-  });
+    conn.on("close", function(code, reason) {
+    });
 });
 
 websocket.listenTls(443, "10.21.10.40", function(conn) {
-  console.log("TLS connection opened");
+    conn.on("data", function(opcode, data) {
+        conn.send(data);
+    });
 
-  conn.on("data", function(opcode, data) {
-    console.log("TLS message: ", data);
-    conn.send(data);
-  });
-
-  conn.on("close", function(code, reason) {
-    console.log("TLS connection closed: ", code, reason);
-  });
+    conn.on("close", function(code, reason) {
+    });
 });
