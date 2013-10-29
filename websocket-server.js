@@ -15,14 +15,6 @@ specific language governing permissions and limitations
 KIND, either express or implied.  See the License for the
 under the License. */
 
-/*
-	The Definitive Guide to HTML5 WebSocket	
-*/
-
-
-// The Definitive Guide to HTML5 WebSocket
-//  Example WebSocket server
-
 // See The WebSocket Protocol for the official specification
 // http://tools.ietf.org/html/rfc6455
 
@@ -32,6 +24,8 @@ var https = require("https");
 var crypto = require("crypto");
 var util = require("util");
 var fs = require('fs');
+var path = require('path');
+var url = require('url');
 
 // opcodes for WebSocket frames
 // http://tools.ietf.org/html/rfc6455#section-5.2
@@ -77,7 +71,7 @@ var WebSocketConnection = function(req, socket, upgradeHead) {
   this.socket = socket;
   this.buffer = new Buffer(0);
   this.closed = false;
-}
+};
 util.inherits(WebSocketConnection, events.EventEmitter);
 
 // Send a text or binary message on the WebSocket connection
@@ -95,7 +89,7 @@ WebSocketConnection.prototype.send = function(obj) {
     throw new Error("Cannot send object. Must be string or Buffer");
   }
   this._doSend(opcode, payload);
-}
+};
 
 // Close the WebSocket connection
 WebSocketConnection.prototype.close = function(code, reason) {
@@ -111,7 +105,7 @@ WebSocketConnection.prototype.close = function(code, reason) {
   }
   this._doSend(opcode, buffer);
   this.closed = true;
-}
+};
 
 // Process incoming bytes
 WebSocketConnection.prototype._processBuffer = function() {
@@ -257,6 +251,44 @@ var encodeMessage = function(opcode, payload) {
   return buf;
 }
 
+ var handleWebRequest = function(request, response) {
+     var uri = url.parse(request.url).pathname,
+         filename = path.join(process.cwd(), uri);
+
+      var contentTypesByExtension = {
+        '.html': "text/html",
+        '.css':  "text/css",
+        '.js':   "text/javascript"
+      };
+
+      fs.exists(filename, function(exists) {
+        if(!exists) {
+          response.writeHead(404, {"Content-Type": "text/plain"});
+          response.write("404 Not Found\n");
+          response.end();
+          return;
+        }
+
+        if (fs.statSync(filename).isDirectory()) filename += '/index.html';
+
+        fs.readFile(filename, "binary", function(err, file) {
+          if(err) {        
+            response.writeHead(500, {"Content-Type": "text/plain"});
+            response.write(err + "\n");
+            response.end();
+            return;
+          }
+
+          var headers = {};
+          var contentType = contentTypesByExtension[path.extname(filename)];
+          if (contentType) headers["Content-Type"] = contentType;
+          response.writeHead(200, headers);
+          response.write(file, "binary");
+          response.end();
+        });
+      });
+};
+
 exports.listen = function(port, host, connectionHandler) {
   var srv = http.createServer(function(req, res) {
   });
@@ -264,6 +296,10 @@ exports.listen = function(port, host, connectionHandler) {
   srv.on('upgrade', function(req, socket, upgradeHead) {
     var ws = new WebSocketConnection(req, socket, upgradeHead);
     connectionHandler(ws);
+  });
+
+  srv.on('request', function(request, response) {
+    handleWebRequest(request, response);
   });
 
   srv.listen(port, host);
@@ -279,17 +315,7 @@ exports.listenTls = function(port, host, connectionHandler) {
   });
 
   srv.on('request', function(request, response) {
-    response.writeHead(200, {"Content-Type": "text/html"});
-    response.write("<!DOCTYPE 'html'>");
-    response.write("<html>");
-    response.write("<head>");
-    response.write("<title>Just a page to allow certificate transfer</title>");
-    response.write("</head>");
-    response.write("<body>");
-    response.write("Nothing to see here.");
-    response.write("</body>");
-    response.write("</html>");
-    response.end();
+    handleWebRequest(request, response);
   });
 
   srv.listen(port, host);
