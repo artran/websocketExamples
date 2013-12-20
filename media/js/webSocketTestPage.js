@@ -47,10 +47,10 @@
     wssClose.attr('disabled', true);
 
     wsOpen.click(function(evt) {
-        ws = openWebSocket('ws://' + window.location.hostname, wsOpen, wsClose, wsSend, wsInput, wsLog);
+        ws = openWebSocket('ws://' + window.location.hostname + '/echoService', wsOpen, wsClose, wsSend, wsInput, wsLog);
     });
 
     wssOpen.click(function(evt) {
-        wss = openWebSocket('wss://' + window.location.hostname, wssOpen, wssClose, wssSend, wssInput, wssLog);
+        wss = openWebSocket('wss://' + window.location.hostname + '/echoService', wssOpen, wssClose, wssSend, wssInput, wssLog);
     });
 }(jQuery));
